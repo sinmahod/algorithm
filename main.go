@@ -44,7 +44,7 @@ func BinarySearch(key int, a []int) int {
 	for si < ei {
 		var mid = (si + ei) >> 1 //同si + (ei-si)/2，右移一位等于/2
 		if key > a[mid] {
-			si = mid + 1 //+1的作用是中间位置偏右一位，否则无法获取数组最后一位元素
+			si = mid + 1 //+1的作用是中间位置偏右一位，因为ei等于a的长度而si最多是数组的长度，+1是为了所查询的数字超过数组最右值（最大）时让si=ei成立
 		} else if key < a[mid] {
 			ei = mid
 		} else {
