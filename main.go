@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 func main() {
@@ -12,10 +13,13 @@ func main() {
 	for i := 0; i < 100; i++ {
 		arr = append(arr, rand.Intn(100))
 	}
+	s := time.Now()
 	fmt.Println(arr)
 	fmt.Println("------------------------------------------", len(arr))
 	ShellSort(arr)
 	fmt.Println(arr)
+	e := time.Since(s).Nanoseconds()
+	fmt.Printf("%f", float64(e)/1000000)
 }
 
 //欧几里德算法求最小公约数:两数相除取余数，余数为0则被除数是最小公约数，不为0则被除数在除以余数继续算，直到余数为0
