@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -20,6 +22,10 @@ func main() {
 	fmt.Println(arr)
 	e := time.Since(s).Nanoseconds()
 	fmt.Printf("%f", float64(e)/1000000)
+	key, _ := strconv.Atoi(os.Args[1])
+	fmt.Println(BinarySearch(key, []int{1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12}))
+	fmt.Println("=============================")
+	fmt.Println(BinarySearch2(key, []int{1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12}))
 }
 
 //欧几里德算法求最小公约数:两数相除取余数，余数为0则被除数是最小公约数，不为0则被除数在除以余数继续算，直到余数为0
@@ -32,39 +38,22 @@ func GCD(x, y int) int {
 }
 
 //二分查找算法：查询key在数组中的位置（数组必须是有序的）
-//BinarySearch(9, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-// 0,1,2,3,4,5,6,7,8,9
-//                5,6,7,8,9   = 5  (10-0)/2
-//                         8,9   = 8  (10-6)/2+6
-//                            9   = 9  (10-9)/2+9
-//BinarySearch(0, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
-// 0,1,2,3,4,5,6,7,8,9
-// 0,1,2,3,4,5               = 5   (10-0)/2
-// 0,1,2                        = 2   (5-0)/2
-// 0,1                           = 1   (2-0)/2
-// 0                              = 0   (1-0)/2
-//BinarySearch(5, []int{0, 1, 2, 3, 4, 6, 7, 8, 9}
-// 0,1,2,3,4,6,7,8,9
-//             4,6,7,8,9   = 4  (9-0)/2
-//                      8,9   = 7  (9-5)/2+5
-//                   7         = 6  (9-7)/2+5
-//                6            = 5  (6-5)/2+5
-//                              = -1  s=e
-func BinarySearch(key int, a []int) int {
+func BinarySearch2(key int, a []int) int {
 
 	var si = 0
-	var ei = len(a)
+	var ei = len(a) - 1
 	//si与ei分别对应Start Index和End Index，会随着计算缩小间隔
 
-	for si < ei {
+	for si <= ei {
 		var mid = (si + ei) >> 1 //同si + (ei-si)/2，右移一位等于/2
 		if key > a[mid] {
-			si = mid + 1 //+1的作用是中间位置偏右一位，因为ei等于a的长度而si最多是数组的长度，+1是为了所查询的数字超过数组最右值（最大）时让si=ei成立
+			si = mid + 1 //+1是为了避免表达式(ei-si)的值小于2时出现的死循环，这样至少每次都能上涨一位
 		} else if key < a[mid] {
-			ei = mid
+			ei = mid - 1 //-1是为了避免key为元素比最小值还小时造成无限与数组第一位元素做判断的死循环
 		} else {
 			return mid
 		}
+		fmt.Println(mid, si, ei)
 	}
 	return -1
 }
