@@ -3,14 +3,18 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"os"
-	"strconv"
 	"time"
 )
 
 func main() {
 	//fmt.Println(GCD(10, 3))
 	//fmt.Println(BinarySearch(5, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}))
+
+	// key, _ := strconv.Atoi(os.Args[1])
+	// fmt.Println(BinarySearch(key, []int{1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12}))
+	// fmt.Println("=============================")
+	// fmt.Println(BinarySearch2(key, []int{1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12}))
+
 	arr := make([]int, 0)
 	for i := 0; i < 100; i++ {
 		arr = append(arr, rand.Intn(100))
@@ -18,14 +22,11 @@ func main() {
 	s := time.Now()
 	fmt.Println(arr)
 	fmt.Println("------------------------------------------", len(arr))
-	ShellSort(arr)
+	BubbleSort(arr)
 	fmt.Println(arr)
 	e := time.Since(s).Nanoseconds()
 	fmt.Printf("%f", float64(e)/1000000)
-	key, _ := strconv.Atoi(os.Args[1])
-	fmt.Println(BinarySearch(key, []int{1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12}))
-	fmt.Println("=============================")
-	fmt.Println(BinarySearch2(key, []int{1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12}))
+
 }
 
 //欧几里德算法求最小公约数:两数相除取余数，余数为0则被除数是最小公约数，不为0则被除数在除以余数继续算，直到余数为0
@@ -38,7 +39,7 @@ func GCD(x, y int) int {
 }
 
 //二分查找算法：查询key在数组中的位置（数组必须是有序的）
-func BinarySearch2(key int, a []int) int {
+func BinarySearch(key int, a []int) int {
 
 	var si = 0
 	var ei = len(a) - 1
@@ -78,11 +79,24 @@ func ShellSort(arr []int) []int {
 		//第三次循环增加值为4，依次计算4>0,5>1.....99>95>91>87.....>19>15>11>7>3
 		//最后一次循环增量值为1
 		for i := h; i < l; i++ {
-			for j := i; j >= h && !Compare(arr[j] > arr[j-h]); j -= h {
+			for j := i; j >= h && !Compare(arr[j], arr[j-h]); j -= h {
 				arr[j], arr[j-h] = arr[j-h], arr[j] //交换数组值
 			}
 		}
 		h = h / 3 //增量每次递减
+	}
+	return arr
+}
+
+//冒泡排序
+func BubbleSort(arr []int) []int {
+	l := len(arr)
+	for i := 0; i < l; i++ {
+		for j := i + 1; j < l; j++ {
+			if arr[i] > arr[j] {
+				arr[i], arr[j] = arr[j], arr[i]
+			}
+		}
 	}
 	return arr
 }
